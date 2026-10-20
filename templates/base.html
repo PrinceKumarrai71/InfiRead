@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#10152b">
+  <title>{% block title %}InfiRead — Smart Library{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+<header class="topbar">
+  <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">i<span>R</span></span><span>InfiRead<small>SMART LIBRARY</small></span></a>
+  <button class="menu-toggle" aria-label="Toggle navigation" data-menu-toggle>☰</button>
+  <nav class="nav" data-nav>
+    <a href="{{ url_for('books') }}">Explore books</a>
+    {% if user %}
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('reservations') }}">Reservations</a>
+      <a href="{{ url_for('notifications') }}">Notifications</a>
+      {% if user.role == 'admin' %}<a href="{{ url_for('members') }}">Members</a><a href="{{ url_for('settings') }}">Settings</a>{% endif %}
+      <span class="user-chip"><span class="avatar">{{ user.name[:1]|upper }}</span>{{ user.name }}</span>
+      <form method="post" action="{{ url_for('logout') }}" class="inline-form"><button class="btn btn-ghost btn-small">Log out</button></form>
+    {% else %}
+      <a href="{{ url_for('login') }}">Log in</a><a class="btn btn-primary btn-small" href="{{ url_for('register') }}">Get started <span>↗</span></a>
+    {% endif %}
+  </nav>
+</header>
+<main>
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}<div class="flash-wrap">{% for category, message in messages %}<div class="flash {{ category }}">{{ message }}<button aria-label="Dismiss" data-dismiss>×</button></div>{% endfor %}</div>{% endif %}
+  {% endwith %}
+  {% block content %}{% endblock %}
+</main>
+<footer class="footer"><div class="footer-brand"><span class="brand-mark">i<span>R</span></span><div><b>InfiRead</b><small>Your Books. Your Knowledge. Your World.</small></div></div><p>Built for curious minds. © <span data-year></span> InfiRead</p><a href="{{ url_for('books') }}">Explore the collection ↗</a></footer>
+</body>
+</html>

@@ -1,0 +1,1 @@
+Automated tests are not yet included in this starter. Recommended next step: add pytest coverage for registration/login, role permissions, inventory consistency, issue/return, renewals, and reservations before production use.
